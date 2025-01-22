@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "workout-api"
+version = "0.1.0"
+description = ""
+authors = ["João Vieira"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.115.6"
+uvicorn = "^0.34.0"
+sqlalchemy = "^2.0.37"
+pydantic = "^2.10.5"
+alembic = "^1.14.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
