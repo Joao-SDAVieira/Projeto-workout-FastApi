@@ -12,6 +12,8 @@ uvicorn = "^0.34.0"
 sqlalchemy = "^2.0.37"
 pydantic = "^2.10.5"
 alembic = "^1.14.1"
+asyncpg = "^0.30.0"
+pydantic-settings = "^2.7.1"
 
 
 [build-system]
