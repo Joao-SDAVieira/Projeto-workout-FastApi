@@ -1,8 +1,8 @@
-"""Testando correção em models de atleta UUID
+"""Mudando o tipo dos campos
 
-Revision ID: 13e381cd2cc2
-Revises: 9d62b730fdca
-Create Date: 2025-01-22 19:47:11.066555
+Revision ID: 91c3c68d1be5
+Revises: c38e5d987a1f
+Create Date: 2025-01-23 12:19:15.036698
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '13e381cd2cc2'
-down_revision: Union[str, None] = '9d62b730fdca'
+revision: str = '91c3c68d1be5'
+down_revision: Union[str, None] = 'c38e5d987a1f'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 

@@ -11,3 +11,6 @@ class BaseSchema(BaseModel):
 class OutMixin(BaseModel):
     id: Annotated[UUID4, Field(description='Indentificador')]
     created_at: Annotated[datetime, Field(description='Data de criação')]
+    
+class Message(BaseModel):
+    message: str

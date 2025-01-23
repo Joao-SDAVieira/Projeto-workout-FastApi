@@ -28,7 +28,7 @@ async def post(db_session: DataBaseDependency,
     await db_session.commit()
     
     
-    return categoria_out
+    return categoria_model
 
 
 @router.get('/',
