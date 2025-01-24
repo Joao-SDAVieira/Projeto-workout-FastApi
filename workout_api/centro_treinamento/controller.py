@@ -20,6 +20,13 @@ router = APIRouter()
              )
 async def post(db_session: DataBaseDependency,
                centro_treinamento_in:CentroTreinamentoIn = Body(...)) -> CentroTreinamentoOut:
+    
+    ct_in_db = (await db_session.scalar(
+    select(CentroTreinamentoModel).where(CentroTreinamentoModel.nome == centro_treinamento_in.nome)
+    ))
+
+    if ct_in_db:
+        raise HTTPException(status_code=status.HTTP_303_SEE_OTHER, detail="Centro de Treinamento already registered")
     centro_treinamento_out = CentroTreinamentoOut(id=uuid4(), **centro_treinamento_in.model_dump())
     
     centro_treinamento_model = CentroTreinamentoModel(**centro_treinamento_out.model_dump())

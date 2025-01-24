@@ -20,6 +20,13 @@ router = APIRouter()
              )
 async def post(db_session: DataBaseDependency,
                categoria_in:CategoriaIn = Body(...)) -> CategoriaOut:
+    
+    categoria_in_db = (await db_session.scalar(
+        select(CategoriaModel).where(CategoriaModel.nome == categoria_in.nome)
+        ))
+    
+    if categoria_in_db:
+        raise HTTPException(status_code=status.HTTP_303_SEE_OTHER, detail="Categoria already registered")
     categoria_out = CategoriaOut(id=uuid4(), **categoria_in.model_dump())
     
     categoria_model = CategoriaModel(**categoria_out.model_dump())

@@ -1,4 +1,4 @@
-from pydantic import Field, PositiveFloat
+from pydantic import Field, PositiveFloat, ConfigDict, BaseModel
 from typing import Annotated, Optional
 
 from workout_api.contrib.schemas import BaseSchema, OutMixin
@@ -20,6 +20,12 @@ class AtletaIn(Atleta):
 
 class AtletaOut(Atleta, OutMixin):
     pass
+
+class AtletaPublic(BaseModel):
+    nome: Annotated[str, Field(description='Nome do atleta', examples=['João'], max_length=50)]
+    categoria: Annotated[CategoriaIn, Field(description='Sexo do atleta')]
+    centro_treinamento: Annotated[CentroTreinamentoAtleta, Field(description='Centro de treinamento do atleta')]
+    model_config = ConfigDict(from_attributes=True)
 
 class AtletaUpdate(BaseSchema):
     nome: Annotated[Optional[str], Field(None, description='Nome do atleta', examples=['João'], max_length=50)]

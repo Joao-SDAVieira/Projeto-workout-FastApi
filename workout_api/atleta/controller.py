@@ -9,7 +9,7 @@ from pydantic import UUID4
 from workout_api.centro_treinamento.models import CentroTreinamentoModel
 from workout_api.categorias.models import CategoriaModel
 from workout_api.contrib.dependencies import DataBaseDependency
-from workout_api.atleta.schemas import AtletaIn, AtletaOut, AtletaUpdate
+from workout_api.atleta.schemas import AtletaIn, AtletaOut, AtletaUpdate, AtletaPublic
 from workout_api.atleta.models import AtletaModel
 from workout_api.contrib.schemas import Message
 
@@ -27,7 +27,7 @@ async def post(db_session: DataBaseDependency,
         ))
 
     if atleta_in_db:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Atleta already registered with this CPF")
+        raise HTTPException(status_code=status.HTTP_303_SEE_OTHER, detail="Atleta already registered with this CPF")
     
     categoria = (
         await db_session.execute(
@@ -78,12 +78,24 @@ async def post(db_session: DataBaseDependency,
 @router.get('/',
              summary='read atletas',
              status_code=status.HTTP_200_OK,
-             response_model=list[AtletaOut],
+             response_model=list[AtletaPublic],
              )
-async def query(db_session: DataBaseDependency,) -> list[AtletaOut]:
-    atletas: list[AtletaOut] = (await db_session.execute(select(AtletaModel))).scalars().all()
+async def query(db_session: DataBaseDependency,
+                nome:str | None = None,
+                cpf:str | None = None,
+                limit:int = 10,
+                skip: int=0) -> list[AtletaPublic]:
     
-    return [AtletaOut.model_validate(atleta) for atleta in atletas]
+    query = select(AtletaModel)
+    
+    if nome:
+        query = query.where(AtletaModel.nome.contains(nome))
+    if cpf:
+        query = query.where(AtletaModel.cpf.contains(cpf))
+    
+    atletas: list[AtletaPublic] = (await db_session.scalars(query.limit(limit).offset(skip))).all()
+    
+    return [AtletaPublic.model_validate(atleta) for atleta in atletas]
 
 
 @router.get('/{id}',
